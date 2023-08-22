@@ -46,8 +46,8 @@
 
 <Maze />
 
-<T.Mesh position={$cubePosition} bind:ref={outlinedCube}>
-	<T.MeshToonMaterial color="gold" />
+<T.Mesh position={[$cubePosition[0], $cubePosition[1], $cubePosition[2]]} bind:ref={outlinedCube}>
+	<T.MeshToonMaterial color={0x00eeff} />
 	<T.BoxGeometry />
 </T.Mesh>
 
