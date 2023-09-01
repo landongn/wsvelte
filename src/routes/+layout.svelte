@@ -15,6 +15,9 @@
 		console.log($$slots);
 	});
 
+	let screenWidth = 1024;
+	let screenHeight = 768;
+
 	const establishWebSocket = () => {
 		if (webSocketEstablished) return;
 		const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -35,8 +38,9 @@
 	};
 </script>
 
+<svelte:window bind:innerWidth={screenWidth} bind:innerHeight={screenHeight} />
 <div>
-	<Canvas size={{ width: window.innerWidth, height: window.innerHeight }}>
+	<Canvas size={{ width: screenWidth, height: screenHeight }}>
 		<Root>
 			<slot />
 		</Root>

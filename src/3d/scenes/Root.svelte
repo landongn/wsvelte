@@ -31,11 +31,9 @@
 
 <script lang="ts">
 	import { T, useRender, useThrelte } from '@threlte/core';
-	import { Grid, useGltfAnimations } from '@threlte/extras';
+	import { Grid } from '@threlte/extras';
 	import CustomRenderer from '../EffectsPipeline.svelte';
-	const { renderer, frameloop } = useThrelte();
-	frameloop.set('always');
-	const { gltf, actions } = useGltfAnimations();
+	const { renderer } = useThrelte();
 
 	let MainCamera: CameraControls;
 	let pCam: PerspectiveCamera;
@@ -47,7 +45,6 @@
 		pCam = ref;
 
 		camLoaded = true;
-		console.log(renderer.domElement);
 		MainCamera = new CameraControls(ref, renderer.domElement);
 
 		MainCamera.addEventListener('controlstart', (event) => {
