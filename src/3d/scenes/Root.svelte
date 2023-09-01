@@ -30,8 +30,8 @@
 </script>
 
 <script lang="ts">
-	import { T, currentWritable, useRender, useThrelte } from '@threlte/core';
-	import { GLTF, Grid, useGltfAnimations } from '@threlte/extras';
+	import { T, useRender, useThrelte } from '@threlte/core';
+	import { Grid, useGltfAnimations } from '@threlte/extras';
 	import CustomRenderer from '../EffectsPipeline.svelte';
 	const { renderer, frameloop } = useThrelte();
 	frameloop.set('always');
@@ -77,17 +77,8 @@
 	}
 
 	useRender((ctx, delta) => {
-		dayNightUpdateValue.set(dayNightUpdate(delta));
 		MainCamera.update(delta);
 	});
-
-	const dayNightUpdateValue = currentWritable(0);
-	function dayNightUpdate(delta: number) {
-		const result =
-			(-2 * Math.abs(gameHours * 3600 + gameMinutes * 60 + seconds - 12 * 3600)) / 3600 + 1;
-	}
-
-	$: $actions['idle']?.play();
 </script>
 
 <T.PerspectiveCamera
@@ -98,9 +89,7 @@
 	on:create={cameraCreated}
 />
 
-<GLTF bind:gltf={$gltf} url="/castle/banner.glb" />
-
-<T.DirectionalLight intensity={1.8} position.x={5} position.y={$dayNightUpdateValue} />
+<T.DirectionalLight intensity={1.8} position.x={5} position.y={30} />
 <T.AmbientLight />
 
 <Grid
