@@ -1,7 +1,6 @@
 <script lang="ts">
-	import Root from '@3d/scenes/Root.svelte';
-	import { Canvas } from '@threlte/core';
 	import { onMount } from 'svelte';
+	import '../app.postcss';
 
 	let webSocketEstablished = false;
 	let ws: WebSocket | null = null;
@@ -14,9 +13,6 @@
 	onMount(() => {
 		console.log($$slots);
 	});
-
-	let screenWidth = 1024;
-	let screenHeight = 768;
 
 	const establishWebSocket = () => {
 		if (webSocketEstablished) return;
@@ -38,28 +34,4 @@
 	};
 </script>
 
-<svelte:window bind:innerWidth={screenWidth} bind:innerHeight={screenHeight} />
-<div>
-	<Canvas size={{ width: screenWidth, height: screenHeight }}>
-		<Root>
-			<slot />
-		</Root>
-	</Canvas>
-</div>
-
-<style>
-	:global(body) {
-		margin: 0;
-	}
-
-	div {
-		position: fixed;
-		z-index: 0;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background: rgb(13, 19, 32);
-		background: linear-gradient(180deg, rgba(13, 19, 32, 1) 0%, rgba(8, 12, 21, 1) 100%);
-	}
-</style>
+<slot />

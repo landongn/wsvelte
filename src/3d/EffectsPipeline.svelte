@@ -5,7 +5,6 @@
 		EffectPass,
 		FXAAEffect,
 		KernelSize,
-		OutlineEffect,
 		RenderPass,
 		SelectiveBloomEffect
 	} from 'postprocessing';
@@ -18,19 +17,10 @@
 	const composer = new EffectComposer(renderer);
 
 	const setupEffectComposer = (camera: Camera) => {
-		const outlineEffect = new OutlineEffect(scene, camera, {
-			multisampling: Math.min(4, renderer?.capabilities.maxSamples ?? 0),
-			visibleEdgeColor: 0x9249ff,
-			edgeStrength: 2.5,
-			xRay: false,
-			blur: true,
-			pulseSpeed: 0.3
-		});
-
 		composer.removeAllPasses();
 		composer.addPass(new RenderPass(scene, camera));
 		composer.addPass(new EffectPass(camera, new FXAAEffect()));
-		composer.addPass(new EffectPass(camera, outlineEffect));
+		composer.addPass(new EffectPass(camera));
 		composer.addPass(
 			new EffectPass(
 				camera,
