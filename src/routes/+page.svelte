@@ -2,25 +2,46 @@
 	import { Canvas } from '@threlte/core';
 	import { Debug, World } from '@threlte/rapier';
 
-	import Root from '@3d/scenes/Root.svelte';
+	import { autoRotate, showCollider } from '$lib/settings';
+	import { useTweakpane } from '$lib/useTweakpane';
+	import Scene from '@3d/scenes/Scene.svelte';
+	// add tweakpane to show or hide the terrain collision mesh
+	const { action, addButton } = useTweakpane();
+	addButton({
+		title: 'toggle',
+		label: 'Show Collider',
+		onClick: () => {
+			$showCollider = !$showCollider;
+		}
+	});
+	addButton({
+		title: 'toggle',
+		label: 'AutoRotate',
+		onClick: () => {
+			$autoRotate = !$autoRotate;
+		}
+	});
 </script>
 
-<Canvas
-	frameloop="always"
-	rendererParameters={{
-		// don't change! these are required for postprocessing to work properly
+<div class="rndr">
+	<Canvas
+		frameloop="always"
+		rendererParameters={{
+			// don't change! these are required for postprocessing to work properly
 
-		powerPreference: 'high-performance',
-		antialias: false,
-		stencil: false,
-		depth: false
-	}}
->
-	<World>
-		<Debug />
-		<Root />
-	</World>
-</Canvas>
+			powerPreference: 'high-performance',
+			antialias: false,
+			stencil: false,
+			depth: false
+		}}
+	>
+		<World>
+			<Debug visible={$showCollider} />
+			<Scene />
+		</World>
+	</Canvas>
+</div>
+<div use:action />
 
 <style>
 	:global(body) {
@@ -28,7 +49,7 @@
 		background: rgb(13, 19, 32);
 	}
 
-	:global(canvas) {
+	.rndr {
 		display: flex;
 		flex-direction: column;
 		height: 100vh;

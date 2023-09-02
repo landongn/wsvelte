@@ -89,6 +89,7 @@
 	on:create={cameraCreated}
 	position={[0, 0, 0]}
 />
+
 <T.DirectionalLight position={[3, 10, 7]} />
 
 <Grid
