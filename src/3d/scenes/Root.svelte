@@ -1,5 +1,6 @@
-<script context="module" lang="ts">
+<script lang="ts">
 	import CameraControls from 'camera-controls';
+
 	import {
 		Box3,
 		MathUtils,
@@ -27,15 +28,14 @@
 	};
 
 	CameraControls.install({ THREE: subsetOfTHREE });
-</script>
 
-<script lang="ts">
-	import { T, useRender, useThrelte } from '@threlte/core';
-	import { Grid, useGltfAnimations } from '@threlte/extras';
-	import CustomRenderer from '../EffectsPipeline.svelte';
-	const { renderer, frameloop } = useThrelte();
-	frameloop.set('always');
-	const { gltf, actions } = useGltfAnimations();
+	import { T, useRender } from '@threlte/core';
+	import { interactivity } from '@threlte/extras';
+
+	import { useThrelte } from '@threlte/core';
+	import { Grid } from '@threlte/extras';
+	const { renderer } = useThrelte();
+	interactivity();
 
 	let MainCamera: CameraControls;
 	let pCam: PerspectiveCamera;
@@ -47,7 +47,6 @@
 		pCam = ref;
 
 		camLoaded = true;
-		console.log(renderer.domElement);
 		MainCamera = new CameraControls(ref, renderer.domElement);
 
 		MainCamera.addEventListener('controlstart', (event) => {
@@ -70,8 +69,6 @@
 			console.log('wake camera update', event);
 		});
 
-		// MainCamera.moveTo(0, -10, 0);
-		// MainCamera.lookInDirectionOf(0, 0, 0, true);
 		MainCamera.rotateAzimuthTo(10 * MathUtils.DEG2RAD, true);
 		MainCamera.rotatePolarTo(35 * MathUtils.DEG2RAD, true);
 	}
@@ -79,26 +76,28 @@
 	useRender((ctx, delta) => {
 		MainCamera.update(delta);
 	});
+
+	function captureEvent(event: any) {
+		console.log('input event', event);
+	}
 </script>
 
 <T.PerspectiveCamera
-	position={[0, 10, 0]}
 	name="mainCamera"
 	makeDefault
-	fov={50}
+	fov={80}
 	on:create={cameraCreated}
+	position={[0, 0, 0]}
 />
 
-<T.DirectionalLight intensity={1.8} position.x={5} position.y={30} />
-<T.AmbientLight />
+<T.DirectionalLight position={[3, 10, 7]} />
 
 <Grid
-	gridSize={24}
+	gridSize={[24, 48]}
 	position={[0, 0, 0]}
 	cellColor="#ffffff"
 	sectionColor="#ffffff"
-	sectionThickness={0}
-	fadeDistance={25}
+	sectionThickness={1}
+	cellSize={1}
+	fadeDistance={250}
 />
-
-<CustomRenderer />
